@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+app="$1"
+
+# Cut a new release that won't include the addon's derived env vars
+"$PLUSHU_ROOT/lib/plushook" release-app "$app"
+
+# Restart app so it can be unlinked to the addon container,
+# using the new release which won't have the derived vars defined
+"$PLUSHU_ROOT/lib/plushook" restart-local-app "$app"

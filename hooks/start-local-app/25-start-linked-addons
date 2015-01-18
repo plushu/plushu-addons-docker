@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+app="$1"
+app_dir="$PLUSHU_APPS_DIR/$app"
+
+# For instances where a glob has no matches we want an empty list
+shopt -s nullglob
+
+addons_dir=$app_dir/addons
+
+for target_dir in "$addons_dir"/*; do
+  if [[ -e "$target_dir/docker/IMAGE" ]]; then
+    service="${target_dir##*/}"
+    "$PLUSHU_ROOT/lib/plushook" start-service "$service" "$target_dir"
+  fi
+done

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+app="$1"
+app_dir="$PLUSHU_APPS_DIR/$app"
+
+# For instances where a glob has no matches we want an empty list
+shopt -s nullglob
+
+addons_dir=$app_dir/addons
+
+for target_dir in "$addons_dir"/*; do
+  service="${target_dir##*/}"
+  service_path="$PLUSHU_SERVICES_DIR/$service"
+  if [[ -e "$service_path/docker/app-env" ]]; then
+    PLUSHU_SERVICE_NAME="$service" PLUSHU_SERVICE_PATH="$service_path" \
+      "$service_path/docker/app-env" "$app"
+  fi
+done

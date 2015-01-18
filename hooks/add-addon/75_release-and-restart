@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ -n "$PLUSHU_TRACE" ]] && set -x
+
+app="$1"
+
+# Cut a new release that will include the new addon's derived env vars
+"$PLUSHU_ROOT/lib/plushook" release-app "$app"
+
+# Restart app so it can be linked to the addon container
+"$PLUSHU_ROOT/lib/plushook" restart-local-app "$app"
