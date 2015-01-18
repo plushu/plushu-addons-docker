@@ -13,7 +13,7 @@ for target_dir in "$addons_dir"/*; do
   cidfile="$target_dir/docker/run.cid"
   if [[ -e "$cidfile" ]]; then
     service="${target_dir##*/}"
-    printf '--link %q:addon_%q_link\n' \
+    printf '\n--link %q:addon_%q_link\n' \
       "$(docker inspect -f {{.Name}} $(<"$cidfile"))" "$service"
   fi
 done
