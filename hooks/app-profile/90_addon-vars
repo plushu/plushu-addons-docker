@@ -16,4 +16,8 @@ for target_dir in "$addons_dir"/*; do
     PLUSHU_SERVICE_NAME="$service" PLUSHU_SERVICE_PATH="$service_path" \
       "$service_path/docker/app-env" "$app"
   fi
+  if [[ -e "$service_path/docker/app-profile" ]]; then
+    PLUSHU_SERVICE_NAME="$service" PLUSHU_SERVICE_PATH="$service_path" \
+      "$service_path/docker/app-profile" "$app"
+  fi
 done
